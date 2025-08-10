@@ -1,4 +1,5 @@
 package com.example;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,7 +12,7 @@ class InvalidInputException extends Exception {
 
 public class SinhCalculatorGUI extends JFrame {
     private JTextField inputField;
-    private JTextArea outputArea;
+    private JTextField outputField;
     private JButton calculateButton;
     private JButton clearButton;
 
@@ -25,39 +26,62 @@ public class SinhCalculatorGUI extends JFrame {
         heading.setFont(new Font("Arial", Font.BOLD, 20));
         add(heading, BorderLayout.NORTH);
 
-        JPanel centerPanel = new JPanel(new GridLayout(2, 2, 2, 2));
-        centerPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        JPanel centerPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        centerPanel.add(new JLabel("Enter x for sinh(x):"));
+        JLabel inputLabel = new JLabel("Enter x for sinh(x):");
+        centerPanel.add(inputLabel);
+
         inputField = new JTextField();
+        inputField.setToolTipText("Enter a numeric value to calculate sinh(x)");
+        inputField.getAccessibleContext().setAccessibleName("Input field for sinh(x)");
         centerPanel.add(inputField);
 
         calculateButton = new JButton("Calculate");
-        clearButton = new JButton("Clear");
-
+        calculateButton.setToolTipText("Click to calculate sinh(x) for the input value");
+        calculateButton.getAccessibleContext().setAccessibleName("Calculate button");
         centerPanel.add(calculateButton);
+
+        clearButton = new JButton("Clear");
+        clearButton.setToolTipText("Click to clear input and output fields");
+        clearButton.getAccessibleContext().setAccessibleName("Clear button");
         centerPanel.add(clearButton);
+
         add(centerPanel, BorderLayout.CENTER);
 
-        outputArea = new JTextArea();
-        outputArea.setEditable(false);
-        outputArea.setMargin(new Insets(5, 5, 5, 5));
-        add(new JScrollPane(outputArea), BorderLayout.SOUTH);
+        outputField = new JTextField();
+        outputField.setEditable(false);
+        outputField.setFont(new Font("Arial", Font.PLAIN, 14));
+        outputField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        outputField.setToolTipText("Displays the result or error messages");
+        outputField.getAccessibleContext().setAccessibleName("Output field");
+        add(outputField, BorderLayout.SOUTH);
 
-        // Button Action
+        // Set default button so Enter triggers calculate
+        getRootPane().setDefaultButton(calculateButton);
+
+        // Allow Enter key press in inputField to trigger calculation
+        inputField.addActionListener(e -> calculateButton.doClick());
+
+        // Button Action with error handling and color feedback
         calculateButton.addActionListener(event -> {
             try {
                 double inputValue = parseInput(inputField.getText());
                 double result = computeSinh(inputValue, 10);
-                outputArea.setText("sinh(" + inputValue + ") = " + String.format("%.6f", result));
+                outputField.setForeground(Color.BLACK);
+                outputField.setText("sinh(" + inputValue + ") = " + String.format("%.6f", result));
             } catch (InvalidInputException ex) {
-                outputArea.setText("Error: " + ex.getMessage());
+                outputField.setForeground(Color.RED);
+                outputField.setText("Error: " + ex.getMessage());
             }
         });
 
         clearButton.addActionListener(e -> {
             inputField.setText("");
-            outputArea.setText("");
+            outputField.setText("");
+            outputField.setForeground(Color.BLACK);
         });
     }
 
@@ -72,7 +96,7 @@ public class SinhCalculatorGUI extends JFrame {
         return result;
     }
 
-    //Helper to calculate power
+    // Helper to calculate power
     private double power(double base, int exp) {
         double result = 1.0;
         for (int i = 0; i < exp; i++) {
@@ -104,7 +128,6 @@ public class SinhCalculatorGUI extends JFrame {
         SwingUtilities.invokeLater(() -> {
             SinhCalculatorGUI gui = new SinhCalculatorGUI();
             gui.setVisible(true);
-            }
-        );
+        });
     }
 }
