@@ -1,8 +1,6 @@
 package com.example;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 // Custom Exception for Invalid Input
 class InvalidInputException extends Exception {
@@ -14,15 +12,16 @@ class InvalidInputException extends Exception {
 public class SinhCalculatorGUI extends JFrame {
     private JTextField inputField;
     private JTextArea outputArea;
-    private JButton calculateButton, clearButton;
+    private JButton calculateButton;
+    private JButton clearButton;
 
     public SinhCalculatorGUI() {
         setTitle("Sinh(x) Calculator");
         setSize(400, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        JLabel heading = new JLabel("Sinh(x) Calculator", JLabel.CENTER);
+        JLabel heading = new JLabel("Sinh(x) Calculator", javax.swing.SwingConstants.CENTER);
         heading.setFont(new Font("Arial", Font.BOLD, 20));
         add(heading, BorderLayout.NORTH);
 
@@ -46,15 +45,13 @@ public class SinhCalculatorGUI extends JFrame {
         add(new JScrollPane(outputArea), BorderLayout.SOUTH);
 
         // Button Action
-        calculateButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    double text = parseInput(inputField.getText());
-                    double result = computeSinh(text,10);
-                    outputArea.setText("sinh(" + text + ") = " + String.format("%.6f", result));
-                } catch (InvalidInputException ex) {
-                    outputArea.setText("Error: " + ex.getMessage());
-                }
+        calculateButton.addActionListener(event -> {
+            try {
+                double inputValue = parseInput(inputField.getText());
+                double result = computeSinh(inputValue, 10);
+                outputArea.setText("sinh(" + inputValue + ") = " + String.format("%.6f", result));
+            } catch (InvalidInputException ex) {
+                outputArea.setText("Error: " + ex.getMessage());
             }
         });
 
@@ -62,11 +59,6 @@ public class SinhCalculatorGUI extends JFrame {
             inputField.setText("");
             outputArea.setText("");
         });
-    }
-
-    // Manual sinh(x) computation
-    private double calculateSinh(double x) {
-        return (exp(x) - exp(-x)) / 2.0;
     }
 
     public double computeSinh(double value, int terms) {
@@ -94,19 +86,6 @@ public class SinhCalculatorGUI extends JFrame {
         double result = 1.0;
         for (int i = 2; i <= number; i++) {
             result *= i;
-        }
-        return result;
-    }
-
-    // Manual implementation of exp(x)
-    private double exp(double value) {
-        double result = 1.0;
-        double term = 1.0;
-        final int Max_Iterations = 20;
-
-        for (int i = 1; i <= Max_Iterations; i++) {
-            term *= value / i;
-            result += term;
         }
         return result;
     }
