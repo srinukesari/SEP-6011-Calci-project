@@ -28,17 +28,17 @@ public class SinhCalculatorTest {
 
     @Test
     public void testSinhNegative() {
-        double x = -1.0;
-        double expected = Math.sinh(x);
-        double result = calculator.computeSinh(x,10);
+        double input = -1.0;
+        double expected = Math.sinh(input);
+        double result = calculator.computeSinh(input,10);
         assertEquals(expected, result, 1e-9);
     }
 
     @Test
     public void testSinhLargeValue() {
-        double x = 5.0;
-        double expected = Math.sinh(x);
-        double result = calculator.computeSinh(x,20);
+        double input = 5.0;
+        double expected = Math.sinh(input);
+        double result = calculator.computeSinh(input,20);
         assertEquals(expected, result, 1e-9);
     }
 }

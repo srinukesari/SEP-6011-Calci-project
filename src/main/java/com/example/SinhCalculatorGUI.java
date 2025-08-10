@@ -69,11 +69,11 @@ public class SinhCalculatorGUI extends JFrame {
         return (exp(x) - exp(-x)) / 2.0;
     }
 
-    public double computeSinh(double x, int terms) {
+    public double computeSinh(double value, int terms) {
         double result = 0.0;
         for (int n = 0; n < terms; n++) {
             int power = 2 * n + 1;
-            double numerator = power(x, power);
+            double numerator = power(value, power);
             double denominator = factorial(power);
             result += numerator / denominator;
         }
@@ -90,22 +90,22 @@ public class SinhCalculatorGUI extends JFrame {
     }
 
     // Helper to calculate factorial
-    private double factorial(int n) {
+    private double factorial(int number) {
         double result = 1.0;
-        for (int i = 2; i <= n; i++) {
+        for (int i = 2; i <= number; i++) {
             result *= i;
         }
         return result;
     }
 
     // Manual implementation of exp(x)
-    private double exp(double x) {
+    private double exp(double value) {
         double result = 1.0;
         double term = 1.0;
         final int Max_Iterations = 20;
 
         for (int i = 1; i <= Max_Iterations; i++) {
-            term *= x / i;
+            term *= value / i;
             result += term;
         }
         return result;
