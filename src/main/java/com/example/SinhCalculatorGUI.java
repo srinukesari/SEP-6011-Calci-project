@@ -24,27 +24,33 @@ public class SinhCalculatorGUI extends JFrame {
 
         JLabel heading = new JLabel("Sinh(x) Calculator", javax.swing.SwingConstants.CENTER);
         heading.setFont(new Font("Arial", Font.BOLD, 20));
+        heading.getAccessibleContext().setAccessibleDescription("Application heading: Sinh x Calculator");
         add(heading, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel inputLabel = new JLabel("Enter x for sinh(x):");
+        inputLabel.setLabelFor(inputField);
+        inputLabel.getAccessibleContext().setAccessibleDescription("Label for input field to enter value of x");
         centerPanel.add(inputLabel);
 
         inputField = new JTextField();
         inputField.setToolTipText("Enter a numeric value to calculate sinh(x)");
         inputField.getAccessibleContext().setAccessibleName("Input field for sinh(x)");
+        inputField.getAccessibleContext().setAccessibleDescription("Text field to input numeric value for sinh(x) calculation");
         centerPanel.add(inputField);
 
         calculateButton = new JButton("Calculate");
         calculateButton.setToolTipText("Click to calculate sinh(x) for the input value");
         calculateButton.getAccessibleContext().setAccessibleName("Calculate button");
+        calculateButton.getAccessibleContext().setAccessibleDescription("Button to trigger calculation of sinh(x)");
         centerPanel.add(calculateButton);
 
         clearButton = new JButton("Clear");
         clearButton.setToolTipText("Click to clear input and output fields");
         clearButton.getAccessibleContext().setAccessibleName("Clear button");
+        clearButton.getAccessibleContext().setAccessibleDescription("Button to clear all fields");
         centerPanel.add(clearButton);
 
         add(centerPanel, BorderLayout.CENTER);
@@ -57,6 +63,7 @@ public class SinhCalculatorGUI extends JFrame {
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         outputField.setToolTipText("Displays the result or error messages");
         outputField.getAccessibleContext().setAccessibleName("Output field");
+        outputField.getAccessibleContext().setAccessibleDescription("Shows calculation result or error messages");
         add(outputField, BorderLayout.SOUTH);
 
         // Set default button so Enter triggers calculate
